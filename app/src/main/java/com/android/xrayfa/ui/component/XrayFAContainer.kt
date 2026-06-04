@@ -313,7 +313,13 @@ fun XrayFAContainer(
                         navBackStack.routeTo(item)
                     }
                 },
-                labelProvider = { item -> item.route },
+                labelProvider = { item ->
+                    when (item) {
+                        is Home -> context.getString(Home.title)
+                        is Config -> context.getString(Config.title)
+                        else -> item.route
+                    }
+                },
                 modifier = Modifier
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
                     .clip(RoundedCornerShape(24.dp))

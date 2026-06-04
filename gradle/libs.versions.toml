@@ -77,4 +77,3 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-kapt = {id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin"}
 kotlin-ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization",version.ref = "kotlin"}
-

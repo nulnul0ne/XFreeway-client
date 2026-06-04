@@ -6,8 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object Config: NavigateDestination {
     override val route: String
-        get() = "config"
+        get() = "subscription"
     override val title: Int
-        get() = R.string.config
+        get() = R.string.subscription_title
 }
-

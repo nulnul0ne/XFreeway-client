@@ -3,9 +3,11 @@ package com.android.xrayfa.ui.component
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -72,6 +74,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
@@ -94,8 +97,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
+import androidx.core.os.LocaleListCompat
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.android.xrayfa.LocaleHelper
 import com.android.xrayfa.common.repository.SettingsKeys
+import com.android.xrayfa.common.repository.LanguageMode
 import com.android.xrayfa.core.XrayBaseService
 import com.android.xrayfa.helper.NotificationHelper
 import com.android.xrayfa.ui.navigation.Apps
@@ -205,24 +211,35 @@ fun SettingsScreen(
                 SettingsGroup(
                     groupName = stringResource(R.string.general_part)
                 ) {
-                    SettingsSelectBox(
-                        title = R.string.theme_select,
-                        description = R.string.dark_mode_description,
-                        icon = Icons.Outlined.Palette,
-                        onSelected = { mode ->
-                            viewmodel.setDarkMode(mode)
+                    SettingsFieldBox(
+                        title = R.string.language_select,
+                        content = when (settingsState.languageMode) {
+                            LanguageMode.RU -> stringResource(R.string.language_ru)
+                            LanguageMode.EN -> stringResource(R.string.language_en)
+                            else -> stringResource(R.string.language_auto)
                         },
-                        selected = when(settingsState.darkMode) {
-                            0 -> stringResource(R.string.light_mode)
-                            1 -> stringResource(R.string.dark_mode)
-                            2 -> stringResource(R.string.auto_mode)
-                            else -> stringResource(R.string.auto_mode)
-                        },
-                        options = mapOf(
-                            0 to stringResource(R.string.light_mode),
-                            1 to stringResource(R.string.dark_mode),
-                            2 to stringResource(R.string.auto_mode)
+                        icon = Icons.Outlined.Language
+                    ) {
+                        val nextMode = when (settingsState.languageMode) {
+                            LanguageMode.AUTO -> LanguageMode.RU
+                            LanguageMode.RU -> LanguageMode.EN
+                            else -> LanguageMode.AUTO
+                        }
+                        LocaleHelper.saveMode(context, nextMode)
+                        viewmodel.setLanguageMode(nextMode)
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(LocaleHelper.resolveLanguageTag(nextMode))
                         )
+                        (context as? Activity)?.recreate()
+                    }
+                    SettingsCheckBox(
+                        title = R.string.custom_network_title,
+                        description = R.string.custom_network_desc,
+                        icon = Icons.Outlined.NetworkCheck,
+                        checked = settingsState.customNetwork,
+                        onCheckedChange = { checked ->
+                            viewmodel.setCustomNetwork(checked)
+                        }
                     )
                     with(sharedTransitionScope) {
                         SettingsFieldBox(
@@ -286,13 +303,23 @@ fun SettingsScreen(
                     }
                 }
 
-                SettingsGroup(
-                    groupName = stringResource(R.string.network_part)
-                ) {
+                var networkExpanded by remember { mutableStateOf(false) }
+                LaunchedEffect(settingsState.customNetwork) {
+                    networkExpanded = settingsState.customNetwork
+                }
+                if (settingsState.customNetwork) {
+                    SettingsGroup(
+                        groupName = stringResource(R.string.network_part),
+                        collapsible = true,
+                        expanded = networkExpanded,
+                        enable = true,
+                        onExpandedChange = { networkExpanded = it }
+                    ) {
                     SettingsSelectBox(
                         title = R.string.socks_address_listen_title,
                         description = R.string.socks_address_listen_desc,
                         icon = Icons.Outlined.Router,
+                        enable = true,
                         onSelected = { mode ->
                             when(mode) {
                                 0 -> viewmodel.setSocksListen("127.0.0.1")
@@ -308,7 +335,8 @@ fun SettingsScreen(
                     SettingsFieldBox(
                         title = R.string.socks_port,
                         content = settingsState.socksPort.toString(),
-                        icon = Icons.Outlined.Numbers
+                        icon = Icons.Outlined.Numbers,
+                        enable = true
                     ) {
                         editInitValue = settingsState.socksPort.toString()
                         isShowEditDialog = true
@@ -320,7 +348,8 @@ fun SettingsScreen(
                     SettingsFieldBox(
                         title = R.string.socks_username_title,
                         content = settingsState.socksUserName,
-                        icon = Icons.Outlined.Person
+                        icon = Icons.Outlined.Person,
+                        enable = true
                     ) {
                         editInitValue = settingsState.socksUserName
                         isShowEditDialog = true
@@ -330,7 +359,8 @@ fun SettingsScreen(
                     SettingsFieldBox(
                         title = R.string.socks_password_title,
                         content = settingsState.socksPassword,
-                        icon = Icons.Outlined.Password
+                        icon = Icons.Outlined.Password,
+                        enable = true
                     ) {
                         editInitValue = settingsState.socksPassword
                         isShowEditDialog = true
@@ -341,7 +371,8 @@ fun SettingsScreen(
                     SettingsFieldBox(
                         title = R.string.dns_ipv4,
                         content = settingsState.dnsIPv4,
-                        icon = Icons.Outlined.Dns
+                        icon = Icons.Outlined.Dns,
+                        enable = true
                     ) {
                         editInitValue = settingsState.dnsIPv4
                         isShowEditDialog = true
@@ -353,6 +384,7 @@ fun SettingsScreen(
                         description = R.string.enable_ipv6_description,
                         icon = Icons.Outlined.NetworkCheck,
                         checked = settingsState.ipV6Enable,
+                        enable = true,
                         onCheckedChange = { checked->
                             viewmodel.setIpV6Enable(checked)
                         }
@@ -377,6 +409,7 @@ fun SettingsScreen(
                             content = stringResource(R.string.route_settings_desc),
                             icon = Icons.Outlined.Route,
                             trailingIcon = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                            enable = true,
                             modifier = Modifier.sharedElement(
                                 sharedTransitionScope.rememberSharedContentState(key = RouteSettings.route),
                                 animatedVisibilityScope = LocalNavAnimatedContentScope.current,
@@ -392,6 +425,7 @@ fun SettingsScreen(
                         downloading = geoIPDownloading,
                         progress = geoIPProgress,
                         onDownloadClick = {viewmodel.downloadGeoIP(context = context)},
+                        enable = true,
                         downloadEnable = XrayBaseService.statusFlow.collectAsState().value,
                         onImportClick = {
                             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -410,6 +444,7 @@ fun SettingsScreen(
                         onDownloadClick = {viewmodel.downloadGeoSite(context)},
                         downloading = geoSiteDownloading,
                         progress = geoSiteProgress,
+                        enable = true,
                         downloadEnable = XrayBaseService.statusFlow.collectAsState().value,
                         onImportClick = {
                             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -436,6 +471,7 @@ fun SettingsScreen(
                         description = R.string.enable_hex_tun_desc,
                         icon = Icons.Outlined.Security,
                         checked = settingsState.hexTunEnable,
+                        enable = true,
                         onCheckedChange = {
                             viewmodel.setHexTunEnable(it)
                         }
@@ -443,7 +479,8 @@ fun SettingsScreen(
                     SettingsFieldBox(
                         title = R.string.test_url,
                         content = settingsState.delayTestUrl,
-                        icon = Icons.Outlined.Speed
+                        icon = Icons.Outlined.Speed,
+                        enable = true
                     ) {
                         //todo: domain validator
                         editInitValue = settingsState.delayTestUrl
@@ -453,30 +490,6 @@ fun SettingsScreen(
                             if (it.isBlank()) context.getString(R.string.can_not_be_empty) else null
                         }
                     }
-                }
-                SettingsGroup(
-                    groupName = stringResource(R.string.about_part)
-                ) {
-
-                    SettingsFieldBox(
-                        title = R.string.xrayfa_version,
-                        content = versionName,
-                        icon = Icons.Outlined.Info,
-                        onClick = {}
-                    )
-
-                    SettingsFieldBox(
-                        title = R.string.xray_core_version,
-                        content = settingsState.xrayCoreVersion,
-                        icon = Icons.Outlined.Info
-                    ) {
-                    }
-                    SettingsFieldBox(
-                        title = R.string.repo_site,
-                        content = stringResource(R.string.repo_description),
-                        icon = ImageVector.vectorResource(R.drawable.ic_github)
-                    ) {
-                        viewmodel.openRepo(context)
                     }
                 }
                 if (isShowEditDialog) {
@@ -531,27 +544,39 @@ fun SettingsCheckBox(
     @StringRes description: Int,
     icon: ImageVector? = null,
     checked: Boolean = false,
+    enable: Boolean = true,
     onCheckedChange: (Boolean) -> Unit = {}
 ) {
     ListItem(
-        headlineContent = { Text(stringResource(title)) },
-        supportingContent = { Text(stringResource(description)) },
+        headlineContent = {
+            Text(
+                text = stringResource(title),
+                color = if (enable) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            )
+        },
+        supportingContent = {
+            Text(
+                text = stringResource(description),
+                color = if (enable) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+            )
+        },
         leadingContent = icon?.let { { 
             Icon(
                 imageVector = it, 
                 contentDescription = null, 
-                tint = MaterialTheme.colorScheme.primary,
+                tint = if (enable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
                 modifier = Modifier.size(24.dp)
             ) 
         } },
         trailingContent = {
             Switch(
                 checked = checked,
-                onCheckedChange = onCheckedChange
+                onCheckedChange = onCheckedChange,
+                enabled = enable
             )
         },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        modifier = Modifier.clickable { onCheckedChange(!checked) }
+        modifier = Modifier.clickable(enabled = enable) { onCheckedChange(!checked) }
     )
 }
 
@@ -650,19 +675,30 @@ fun SettingsSelectBox(
     @StringRes title: Int,
     @StringRes description: Int,
     icon: ImageVector? = null,
+    enable: Boolean = true,
     onSelected: (Int) -> Unit = {},
     selected: String = "dark",
     options: Map<Int,String> = mapOf()
 ) {
     var expand by remember { mutableStateOf(false) }
     ListItem(
-        headlineContent = { Text(stringResource(title)) },
-        supportingContent = { Text(stringResource(description)) },
+        headlineContent = {
+            Text(
+                text = stringResource(title),
+                color = if (enable) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            )
+        },
+        supportingContent = {
+            Text(
+                text = stringResource(description),
+                color = if (enable) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
+            )
+        },
         leadingContent = icon?.let { { 
             Icon(
                 imageVector = it, 
                 contentDescription = null, 
-                tint = MaterialTheme.colorScheme.primary,
+                tint = if (enable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
                 modifier = Modifier.size(24.dp)
             ) 
         } },
@@ -670,7 +706,9 @@ fun SettingsSelectBox(
             Box {
                 TextButton(
                     onClick = {
-                        expand = !expand
+                        if (enable) {
+                            expand = !expand
+                        }
                     },
                     modifier = Modifier
                         .clip(RoundedCornerShape(32.dp))
@@ -694,7 +732,7 @@ fun SettingsSelectBox(
                     }
                 }
                 DropdownMenu(
-                    expanded = expand,
+                    expanded = expand && enable,
                     onDismissRequest = {expand = false},
                     containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                     offset = DpOffset(0.dp, 0.dp),
@@ -717,7 +755,7 @@ fun SettingsSelectBox(
             }
         },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        modifier = Modifier.clickable { expand = !expand }
+        modifier = Modifier.clickable(enabled = enable) { expand = !expand }
     )
 }
 
@@ -770,6 +808,10 @@ fun SettingsFieldBox(
 @Composable
 fun SettingsGroup(
     groupName: String,
+    collapsible: Boolean = false,
+    expanded: Boolean = true,
+    enable: Boolean = true,
+    onExpandedChange: (Boolean) -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
@@ -780,20 +822,24 @@ fun SettingsGroup(
         Text(
             text = groupName,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-        )
-        Surface(
-            color = MaterialTheme.colorScheme.surfaceContainerLow,
-            shape = RoundedCornerShape(24.dp),
+            color = if (enable) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(alpha = 0.38f),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(vertical = 4.dp)
+                .padding(horizontal = 24.dp, vertical = 8.dp)
+                .clickable(enabled = collapsible && enable) { onExpandedChange(!expanded) }
+        )
+        AnimatedVisibility(visible = !collapsible || (expanded && enable)) {
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
             ) {
-                content()
+                Column(
+                    modifier = Modifier.padding(vertical = 4.dp)
+                ) {
+                    content()
+                }
             }
         }
     }

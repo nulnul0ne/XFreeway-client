@@ -1,17 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">XrayFA</string>
-    <string name="app_label" translatable="false">XrayFA</string>
+    <string name="app_name" translatable="false">XFreeway</string>
+    <string name="app_label" translatable="false">XFreeway</string>
     <string name="start">start</string>
     <string name="stop">stop</string>
     <string name="disconnect">Disconnect</string>
     <string name="connected">Connected</string>
     <string name="home">Home</string>
-    <string name="config">Config</string>
+    <string name="config">Subscription</string>
     <string name="logcat">Logcat</string>
     <string name="add_config">add config</string>
     <string name="clipboard_import">Clipboard import</string>
-    <string name="no_configuration">No configuration file</string>
-    <string name="no_configuration_hint">Import a configuration via clipboard or QR code to get started.</string>
+    <string name="no_configuration">No active subscription</string>
+    <string name="no_configuration_hint">Choose a plan and complete payment to receive your configuration automatically.</string>
     <string name="create_a_config">Create First Config</string>
     <string name="select_configuration_notify">select configuration first</string>
     <string name="upload_data">upload</string>
@@ -31,6 +31,12 @@
     <string name="light_mode">Light</string>
     <string name="auto_mode">Auto</string>
     <string name="dark_mode_description">Select to turn on dark mode</string>
+    <string name="custom_network_title">Custom network</string>
+    <string name="custom_network_desc">Enable manual network settings</string>
+    <string name="language_select">Language</string>
+    <string name="language_auto">Auto 🌐</string>
+    <string name="language_ru">Русский 🇷🇺</string>
+    <string name="language_en">English 🇬🇧</string>
     <string name="dns_ipv4" translatable="false">DNS IPv4</string>
     <string name="dns_ipv6" translatable="false">DNS IPv6</string>
     <string name="socks_port" translatable="false">socks port</string>
@@ -144,6 +150,31 @@
     <string name="no_subscriptions">No Subscriptions</string>
     <string name="add_subscription">Add Subscription</string>
     <string name="edit_subscription">Edit Subscription</string>
+    <string name="store_title">Subscription store</string>
+    <string name="store_description">Choose a plan and period</string>
+    <string name="store_plan_basic">Basic</string>
+    <string name="store_plan_plus">Plus+</string>
+    <string name="store_period_month">1 month</string>
+    <string name="store_period_year">1 year</string>
+    <string name="store_selected_price">Selected price</string>
+    <string name="store_buy_button">Buy subscription</string>
+    <string name="store_checkout_coming_soon">Checkout integration is not connected yet</string>
+    <string name="subscription_status_active">Active subscription</string>
+    <string name="subscription_status_inactive">No active subscription</string>
+    <string name="subscription_date_placeholder">until 31.05.2027</string>
+    <string name="subscription_id_label">Subscription ID</string>
+    <string name="subscription_id_empty">not assigned</string>
+    <string name="server_status_label">SERVER STATUS</string>
+    <string name="existing_subscription_question">Do you already have a MyFreeWay subscription?</string>
+    <string name="existing_subscription_input_label">Subscription link</string>
+    <string name="existing_subscription_hint">Only basic.myfreeway.ru/sub/... or plus.myfreeway.ru/sub/...</string>
+    <string name="existing_subscription_check">Check</string>
+    <string name="existing_subscription_checking">Checking...</string>
+    <string name="existing_subscription_imported">Subscription imported</string>
+    <string name="existing_subscription_detach">Detach</string>
+    <string name="existing_subscription_detached">Imported subscription detached</string>
+    <string name="android_payment_confirmed">Payment confirmed. Subscription added.</string>
+    <string name="android_payment_expired">Payment time expired.</string>
     <string name="pre_node">Pre Node</string>
     <string name="next_node">Next Node</string>
     <string name="none">None</string>

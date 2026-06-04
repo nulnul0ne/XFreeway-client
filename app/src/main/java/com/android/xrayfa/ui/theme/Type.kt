@@ -18,12 +18,37 @@ val Nunito = FontFamily(
 
 )
 
+val NixieOne = FontFamily(
+    Font(R.font.nixie_one_regular, FontWeight.Normal)
+)
+
+val JuraNeon = FontFamily(
+    Font(R.font.jura_variable, FontWeight.Normal),
+    Font(R.font.jura_variable, FontWeight.Medium),
+    Font(R.font.jura_variable, FontWeight.SemiBold),
+    Font(R.font.jura_variable, FontWeight.Bold)
+)
+
 val Typography = Typography(
+    displayLarge = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 57.sp),
+    displayMedium = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 45.sp),
+    displaySmall = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 36.sp),
+    headlineLarge = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 32.sp),
+    headlineMedium = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 28.sp),
+    headlineSmall = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 24.sp),
+    titleLarge = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 22.sp),
+    titleMedium = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 16.sp),
+    titleSmall = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 14.sp),
     bodyLarge = TextStyle(
-        fontFamily = Nunito,
-        fontWeight = FontWeight.Normal,
+        fontFamily = JuraNeon,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
-    )
+    ),
+    bodyMedium = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.Medium, fontSize = 14.sp),
+    bodySmall = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.Medium, fontSize = 12.sp),
+    labelLarge = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 14.sp),
+    labelMedium = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 12.sp),
+    labelSmall = TextStyle(fontFamily = JuraNeon, fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
 )
 /*
 val Typography = Typography(
@@ -54,6 +79,4 @@ val Typography = Typography(
  */
 
  */
-
-
 

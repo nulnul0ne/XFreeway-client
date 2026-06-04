@@ -1,21 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name" translatable="false">XrayFA</string>
-    <string name="app_label" translatable="false">XrayFA</string>
+    <string name="app_name" translatable="false">XFreeway</string>
+    <string name="app_label" translatable="false">XFreeway</string>
     <string name="start">Запустить</string>
     <string name="stop">Остановить</string>
-    <string name="disconnect">Отключить</string>
+    <string name="disconnect">Отключено</string>
     <string name="connected">Подключено</string>
     <string name="home">Главная</string>
-    <string name="config">Конфигурация</string>
+    <string name="config">Подписка</string>
     <string name="logcat">Логи</string>
     <string name="add_config">Добавить конфиг</string>
     <string name="clipboard_import">Импорт из буфера обмена</string>
-    <string name="no_configuration">Нет конфигурационного файла</string>
-    <string name="no_configuration_hint">Импортируйте конфигурацию из буфера обмена или QR‑кода, чтобы начать работу.</string>
+    <string name="no_configuration">Нет активной подписки</string>
+    <string name="no_configuration_hint">Выберите тариф и завершите оплату, чтобы конфигурация появилась автоматически.</string>
     <string name="create_a_config">Создать первый конфиг</string>
     <string name="select_configuration_notify">Сначала выберите конфигурацию</string>
-    <string name="upload_data">Отправить</string>
-    <string name="download_data">Загрузить</string>
+    <string name="upload_data">Исходящая</string>
+    <string name="download_data">Входящая</string>
     <string name="config_not_ready">Конфиг не готов</string>
     <string name="qrcode_import">Импорт QR‑кода</string>
     <string name="close_window">Закрыть</string>
@@ -31,6 +31,12 @@
     <string name="light_mode">Светлая</string>
     <string name="auto_mode">Авто</string>
     <string name="dark_mode_description">Выберите, чтобы включить тёмную тему</string>
+    <string name="custom_network_title">Custom network</string>
+    <string name="custom_network_desc">Включить ручные сетевые настройки</string>
+    <string name="language_select">Язык</string>
+    <string name="language_auto">Авто 🌐</string>
+    <string name="language_ru">Русский 🇷🇺</string>
+    <string name="language_en">English 🇬🇧</string>
     <string name="dns_ipv4" translatable="false">DNS IPv4</string>
     <string name="dns_ipv6" translatable="false">DNS IPv6</string>
     <string name="socks_port" translatable="false">SOCKS порт</string>
@@ -137,6 +143,31 @@
     <string name="no_subscriptions">Нет подписок</string>
     <string name="add_subscription">Добавить подписку</string>
     <string name="edit_subscription">Изменить подписку</string>
+    <string name="store_title">Магазин подписок</string>
+    <string name="store_description">Выберите тарифный план и период</string>
+    <string name="store_plan_basic">Базовый</string>
+    <string name="store_plan_plus">Плюс+</string>
+    <string name="store_period_month">1 месяц</string>
+    <string name="store_period_year">1 год</string>
+    <string name="store_selected_price">Выбранная цена</string>
+    <string name="store_buy_button">Купить подписку</string>
+    <string name="store_checkout_coming_soon">Интеграция оплаты пока не подключена</string>
+    <string name="subscription_status_active">Активная подписка</string>
+    <string name="subscription_status_inactive">Подписка не активна</string>
+    <string name="subscription_date_placeholder">до 31.05.2027</string>
+    <string name="subscription_id_label">Subscription ID</string>
+    <string name="subscription_id_empty">не назначен</string>
+    <string name="server_status_label">СТАТУС СЕРВЕРА</string>
+    <string name="existing_subscription_question">У вас уже есть подписка MyFreeWay?</string>
+    <string name="existing_subscription_input_label">Ссылка подписки</string>
+    <string name="existing_subscription_hint">Только basic.myfreeway.ru/sub/... или plus.myfreeway.ru/sub/...</string>
+    <string name="existing_subscription_check">Проверить</string>
+    <string name="existing_subscription_checking">Проверяем...</string>
+    <string name="existing_subscription_imported">Подписка импортирована</string>
+    <string name="existing_subscription_detach">Отвязать</string>
+    <string name="existing_subscription_detached">Импортированная подписка отвязана</string>
+    <string name="android_payment_confirmed">Оплата подтверждена. Подписка добавлена.</string>
+    <string name="android_payment_expired">Время на оплату истекло.</string>
     <string name="pre_node">Пре-узел</string>
     <string name="next_node">Пост-узел</string>
     <string name="none">Нет</string>

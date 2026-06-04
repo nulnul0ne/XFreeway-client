@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.net.URLEncoder
 import javax.inject.Inject
 import kotlin.jvm.java
@@ -55,6 +56,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 import com.android.xrayfa.utils.LinkUtils
+import java.net.InetSocketAddress
+import java.net.Socket
 
 class XrayViewmodel(
     private val repository: NodeRepository,
@@ -155,6 +158,12 @@ class XrayViewmodel(
 
     private val _delay = MutableStateFlow(-1L)
     val delay = _delay.asStateFlow()
+
+    private val _nodeDelays = MutableStateFlow<Map<Int, Long>>(emptyMap())
+    val nodeDelays = _nodeDelays.asStateFlow()
+
+    private val _testingNodeId = MutableStateFlow<Int?>(null)
+    val testingNodeId = _testingNodeId.asStateFlow()
 
     private val _testing = MutableStateFlow(false)
     val testing = _testing.asStateFlow()
@@ -342,6 +351,60 @@ class XrayViewmodel(
         }
     }
 
+    fun importMyFreeWaySubscription(
+        url: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .get()
+                    .url(url)
+                    .build()
+                val response = okHttp.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        onError("Subscription check failed")
+                    }
+                    return@launch
+                }
+
+                val content = response.body?.string().orEmpty()
+                val urls = subscriptionParser.parseUrl(content)
+                    .filter { protocolsPrefix.contains(it.substringBefore("://").lowercase()) }
+                if (urls.isEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        onError("No supported profiles found")
+                    }
+                    return@launch
+                }
+
+                repository.deleteLinkBySubscriptionId(SUB_MANUAL)
+                repository.clearSelection()
+                val nodes = urls.mapIndexed { index, item ->
+                    val link = Link(
+                        protocolPrefix = item.substringBefore("://").lowercase(),
+                        content = item,
+                        selected = index == 0,
+                        subscriptionId = SUB_MANUAL,
+                    )
+                    parserFactory.getParser(link.content).preParse(link)
+                }
+                repository.addNode(*nodes.toTypedArray())
+
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } catch (error: Exception) {
+                Log.e(TAG, "importMyFreeWaySubscription: ${error.message}")
+                withContext(Dispatchers.Main) {
+                    onError("Unable to import subscription")
+                }
+            }
+        }
+    }
+
     fun updateLinkById(id: Int, selected: Boolean) {
         viewModelScope.launch {
             repository.updateSelectById(id,selected)
@@ -385,6 +448,17 @@ class XrayViewmodel(
     fun deleteAllNodes() {
         viewModelScope.launch {
             repository.deleteAllNodes()
+        }
+    }
+
+    fun detachImportedMyFreeWaySubscription(onDone: () -> Unit = {}) {
+        viewModelScope.launch {
+            repository.deleteLinkBySubscriptionId(SUB_MANUAL)
+            repository.clearSelection()
+            onConfigChanged()
+            withContext(Dispatchers.Main) {
+                onDone()
+            }
         }
     }
 
@@ -481,6 +555,27 @@ class XrayViewmodel(
 
             _testing.value = false
             _delay.value = if (finalResult <= 0L) -2L else finalResult
+        }
+    }
+
+    fun measureNodeTcpDelay(node: Node) {
+        measureJob?.cancel()
+        _testingNodeId.value = node.id
+
+        measureJob = viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                val startedAt = System.currentTimeMillis()
+                try {
+                    Socket().use { socket ->
+                        socket.connect(InetSocketAddress(node.address, node.port), 5000)
+                    }
+                    (System.currentTimeMillis() - startedAt).coerceAtLeast(1L)
+                } catch (_: Exception) {
+                    -2L
+                }
+            }
+            _nodeDelays.value = _nodeDelays.value + (node.id to result)
+            _testingNodeId.value = null
         }
     }
 

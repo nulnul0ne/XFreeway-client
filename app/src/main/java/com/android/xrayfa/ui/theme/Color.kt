@@ -3,37 +3,37 @@ package com.android.xrayfa.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // Primary
-val PrimaryLight = Color(0xFF0061A4)
+val PrimaryLight = Color(0xFF2F8DFF)
 val OnPrimaryLight = Color(0xFFFFFFFF)
-val PrimaryContainerLight = Color(0xFFD1E4FF)
-val OnPrimaryContainerLight = Color(0xFF001D36)
+val PrimaryContainerLight = Color(0xFFD6E9FF)
+val OnPrimaryContainerLight = Color(0xFF061833)
 
-val PrimaryDark = Color(0xFF9ECAFF)
-val OnPrimaryDark = Color(0xFF003258)
-val PrimaryContainerDark = Color(0xFF00497D)
-val OnPrimaryContainerDark = Color(0xFFD1E4FF)
+val PrimaryDark = Color(0xFF58B7FF)
+val OnPrimaryDark = Color(0xFF041224)
+val PrimaryContainerDark = Color(0xFF123A73)
+val OnPrimaryContainerDark = Color(0xFFD9ECFF)
 
 // Secondary
-val SecondaryLight = Color(0xFF535F70)
+val SecondaryLight = Color(0xFF4B6C91)
 val OnSecondaryLight = Color(0xFFFFFFFF)
-val SecondaryContainerLight = Color(0xFFD7E3F7)
-val OnSecondaryContainerLight = Color(0xFF101C2B)
+val SecondaryContainerLight = Color(0xFFD7E7FA)
+val OnSecondaryContainerLight = Color(0xFF071827)
 
-val SecondaryDark = Color(0xFFBBC7DB)
-val OnSecondaryDark = Color(0xFF253140)
-val SecondaryContainerDark = Color(0xFF3B4858)
-val OnSecondaryContainerDark = Color(0xFFD7E3F7)
+val SecondaryDark = Color(0xFF9BCBFF)
+val OnSecondaryDark = Color(0xFF09233D)
+val SecondaryContainerDark = Color(0xFF1A385B)
+val OnSecondaryContainerDark = Color(0xFFD7E7FA)
 
 // Tertiary
-val TertiaryLight = Color(0xFF6B5778)
+val TertiaryLight = Color(0xFF5D63B8)
 val OnTertiaryLight = Color(0xFFFFFFFF)
-val TertiaryContainerLight = Color(0xFFF2DAFF)
-val OnTertiaryContainerLight = Color(0xFF251431)
+val TertiaryContainerLight = Color(0xFFE0E3FF)
+val OnTertiaryContainerLight = Color(0xFF10154A)
 
-val TertiaryDark = Color(0xFFD7BEE4)
-val OnTertiaryDark = Color(0xFF3B2948)
-val TertiaryContainerDark = Color(0xFF523F5F)
-val OnTertiaryContainerDark = Color(0xFFF2DAFF)
+val TertiaryDark = Color(0xFF9BA7FF)
+val OnTertiaryDark = Color(0xFF101A4A)
+val TertiaryContainerDark = Color(0xFF2B3478)
+val OnTertiaryContainerDark = Color(0xFFE0E3FF)
 
 // Neutral / Surface
 val SurfaceLight = Color(0xFFF8F9FF)

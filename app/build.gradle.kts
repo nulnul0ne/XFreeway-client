@@ -21,11 +21,12 @@ android {
         targetSdk = 36
         versionCode = VERSION_CODE.toInt()
         versionName = VERSION_NAME
+        buildConfigField("String", "ANDROID_API_BASE_URL", "\"https://ok.myfreeway.ru\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     base {
-        archivesName.set("XrayFA")
+        archivesName.set("XFreeway")
     }
     signingConfigs {
         create("release") {
@@ -169,6 +170,7 @@ dependencies {
     implementation(project(":tun2socks"))
     implementation(project(":common"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

@@ -65,6 +65,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -144,7 +145,14 @@ fun XraySideNavOpt(
                 .offset { IntOffset(0, animOffsetY.value.toInt()) }
                 .size(itemSizeDp)
                 .clip(CircleShape)
-                .background(selectedColor.copy(alpha = 0.12f))
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            Color(0xFF58C7FF).copy(alpha = 0.22f),
+                            Color(0xFF4D6DFF).copy(alpha = 0.18f)
+                        )
+                    )
+                )
         )
 
         // 按钮容器
@@ -296,7 +304,14 @@ fun XrayBottomNavOpt(
                 .width(itemWidthDp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(24.dp))
-                .background(selectedColor.copy(alpha = 0.12f))
+                .background(
+                    Brush.linearGradient(
+                        listOf(
+                            Color(0xFF58C7FF).copy(alpha = 0.22f),
+                            Color(0xFF4D6DFF).copy(alpha = 0.18f)
+                        )
+                    )
+                )
                 .then(dragModifier)
         )
 
@@ -360,7 +375,7 @@ fun ComposeLikeSwitch(
     thumbSize: Dp = 32.dp,
     trackHeight: Dp = 40.dp,
     trackPadding: Dp = 4.dp,
-    checkedColor: Color = Color(0xFF4CAF50),
+    checkedColor: Color = Color(0xFF58B7FF),
     uncheckedColor: Color = Color.Gray,
     content: @Composable RowScope.() -> Unit // 允许你放ItemTab
 ) {
@@ -516,7 +531,12 @@ fun XrayModernFloatingNav(
                         .fillMaxHeight()
                         .padding(6.dp)
                         .background(
-                            color = selectedColor.copy(alpha = 0.12f),
+                                brush = Brush.linearGradient(
+                                    listOf(
+                                        Color(0xFF58C7FF).copy(alpha = 0.22f),
+                                        Color(0xFF4D6DFF).copy(alpha = 0.18f)
+                                    )
+                                ),
                             shape = RoundedCornerShape(28.dp)
                         )
                 )

@@ -132,7 +132,7 @@ fun NodeCard(
             // Node Info
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = node.remark ?: node.address,
+                    text = friendlyNodeName(node),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -244,6 +244,29 @@ fun NodeCard(
             }
         }
     }
+}
+
+fun friendlyNodeName(node: Node): String {
+    val raw = (node.remark ?: node.address).trim()
+    val lower = raw.lowercase()
+    val location = when {
+        lower.contains("finland") || lower.contains("fin-") || lower.startsWith("fin") ||
+            lower.contains("fi-") || lower.startsWith("fi") -> "Finland 🇫🇮"
+        lower.contains("usa") || lower.contains("us-") || lower.startsWith("us") ||
+            lower.contains("us1") -> "USA 🇺🇸"
+        lower.contains("russia") || lower.contains("ru-") || lower.startsWith("ru") ||
+            lower.contains("ru1") -> "Russia 🇷🇺"
+        else -> return raw
+    }
+    val term = Regex("""(\d+\s*[dD](?:\s*[,;-]\s*\d+\s*[hH])?|\d+\s*[hH])$""")
+        .find(raw)
+        ?.value
+        ?.replace("\\s+".toRegex(), "")
+        ?.uppercase()
+        ?.replace("-", ",")
+        ?.replace(";", ",")
+
+    return if (term.isNullOrBlank()) location else "$location - $term"
 }
 
 

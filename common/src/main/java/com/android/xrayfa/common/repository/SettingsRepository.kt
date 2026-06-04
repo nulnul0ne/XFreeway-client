@@ -82,7 +82,8 @@ val defaultRoutes = Gson().toJson(listOf(
  * and then deserialize it back into `RuleObject` when needed.
  */
 data class SettingsState(
-    val darkMode: Int = 0,
+    val darkMode: Int = Theme.DARK_MODE,
+    val languageMode: Int = LanguageMode.AUTO,
     val ipV6Enable: Boolean = false,
     val socksPort: Int = 10808,
     val socksUserName: String = "",
@@ -98,12 +99,14 @@ data class SettingsState(
     val bootAutoStart: Boolean = false,
     val hexTunEnable: Boolean = true,
     val hideFromRecents: Boolean = false,
+    val customNetwork: Boolean = false,
     val domainStrategy: Int = DomainStrategy.IP_IF_NON_MATCH,
     val routingRules: String = defaultRoutes,
     val routingMode: Int = RoutingMode.ROUTE
 )
 object SettingsKeys {
     val DARK_MODE = intPreferencesKey("dark_mode")
+    val LANGUAGE_MODE = intPreferencesKey("language_mode")
     val IPV6_ENABLE = booleanPreferencesKey("ipv6_enable")
     val SOCKS_PORT = intPreferencesKey("socks_port")
     val SOCKS_USERNAME = stringPreferencesKey("socks_username")
@@ -123,6 +126,7 @@ object SettingsKeys {
     val HEX_TUN_ENABLE = booleanPreferencesKey("hex_tun_open")
 
     val HIDE_FROM_RECENTS = booleanPreferencesKey("hide_from_recents")
+    val CUSTOM_NETWORK = booleanPreferencesKey("custom_network")
     val DOMAIN_STRATEGY = intPreferencesKey("DOMAIN_STRATEGY")
     val ROUTING_RULES = stringPreferencesKey("ROUTING_RULES")
     val ROUTING_MODE = intPreferencesKey("routing_mode")
@@ -143,6 +147,20 @@ annotation class Theme {
         const val LIGHT_MODE = 0
         const val DARK_MODE = 1
         const val AUTO_MODE = 2
+    }
+}
+
+@IntDef(value = [
+    LanguageMode.AUTO,
+    LanguageMode.RU,
+    LanguageMode.EN
+])
+@Retention(AnnotationRetention.SOURCE)
+annotation class LanguageMode {
+    companion object {
+        const val AUTO = 0
+        const val RU = 1
+        const val EN = 2
     }
 }
 
@@ -182,7 +200,8 @@ class SettingsRepository
 
     val settingsFlow = context.dataStore.data.map { prefs ->
         SettingsState(
-            darkMode = prefs[SettingsKeys.DARK_MODE] ?: 0,
+            darkMode = prefs[SettingsKeys.DARK_MODE] ?: Theme.DARK_MODE,
+            languageMode = prefs[SettingsKeys.LANGUAGE_MODE] ?: LanguageMode.AUTO,
             ipV6Enable = prefs[SettingsKeys.IPV6_ENABLE] == true,
             socksPort = prefs[SettingsKeys.SOCKS_PORT] ?: 10808,
             socksUserName = prefs[SettingsKeys.SOCKS_USERNAME]?:"",
@@ -198,6 +217,7 @@ class SettingsRepository
             bootAutoStart = prefs[SettingsKeys.BOOT_AUTO_START] == true,
             hexTunEnable =  prefs[SettingsKeys.HEX_TUN_ENABLE]?:true,
             hideFromRecents = prefs[SettingsKeys.HIDE_FROM_RECENTS] == true,
+            customNetwork = prefs[SettingsKeys.CUSTOM_NETWORK] == true,
             domainStrategy = prefs[SettingsKeys.DOMAIN_STRATEGY]?: DomainStrategy.IP_IF_NON_MATCH,
             routingRules = prefs[SettingsKeys.ROUTING_RULES]?: defaultRoutes,
             routingMode = prefs[SettingsKeys.ROUTING_MODE] ?: RoutingMode.ROUTE
@@ -218,6 +238,18 @@ class SettingsRepository
     suspend fun setDarkMode(@Theme darkMode: Int) {
         context.dataStore.edit {
             it[SettingsKeys.DARK_MODE] = darkMode
+        }
+    }
+
+    suspend fun setCustomNetwork(enable: Boolean) {
+        context.dataStore.edit {
+            it[SettingsKeys.CUSTOM_NETWORK] = enable
+        }
+    }
+
+    suspend fun setLanguageMode(@LanguageMode languageMode: Int) {
+        context.dataStore.edit {
+            it[SettingsKeys.LANGUAGE_MODE] = languageMode
         }
     }
 

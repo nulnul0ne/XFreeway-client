@@ -24,6 +24,7 @@ import com.android.xrayfa.common.GEO_LITE
 import com.android.xrayfa.common.GEO_SITE
 import com.android.xrayfa.common.di.qualifier.LongTime
 import com.android.xrayfa.common.repository.DomainStrategy
+import com.android.xrayfa.common.repository.LanguageMode
 import com.android.xrayfa.common.repository.RoutingMode
 import com.android.xrayfa.common.repository.Rule
 import com.android.xrayfa.common.utils.calculateFileHash
@@ -120,6 +121,29 @@ class SettingsViewmodel(
     fun setDarkMode(@Theme darkMode: Int) {
         viewModelScope.launch {
             repository.setDarkMode(darkMode)
+        }
+    }
+
+    fun setCustomNetwork(enable: Boolean) {
+        viewModelScope.launch {
+            repository.setCustomNetwork(enable)
+        }
+    }
+
+    fun cycleLanguageMode() {
+        viewModelScope.launch {
+            val next = when (settingsState.value.languageMode) {
+                LanguageMode.AUTO -> LanguageMode.RU
+                LanguageMode.RU -> LanguageMode.EN
+                else -> LanguageMode.AUTO
+            }
+            repository.setLanguageMode(next)
+        }
+    }
+
+    fun setLanguageMode(@LanguageMode languageMode: Int) {
+        viewModelScope.launch {
+            repository.setLanguageMode(languageMode)
         }
     }
 
