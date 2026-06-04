@@ -1,6 +1,5 @@
 [versions]
 agp = "8.10.0"
-cameraCore = "1.7.0-alpha01"
 core = "3.5.4"
 dagger = "2.57.1"
 datastorePreferences = "1.1.7"
@@ -28,10 +27,6 @@ maxmindGeoip2 = "4.2.0"
 
 
 [libraries]
-androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
-androidx-camera-compose = { module = "androidx.camera:camera-compose", version.ref = "cameraCore" }
-androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
-androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }

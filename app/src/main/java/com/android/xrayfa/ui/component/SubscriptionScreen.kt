@@ -2,7 +2,6 @@ package com.android.xrayfa.ui.component
 
 import android.graphics.Bitmap
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.filled.Contacts
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.outlined.Delete
@@ -75,7 +73,6 @@ import com.android.xrayfa.dto.Node
 import com.android.xrayfa.dto.Subscription
 import com.android.xrayfa.ui.navigation.Config
 import com.android.xrayfa.ui.navigation.NavigateDestination
-import com.android.xrayfa.ui.navigation.ScanQR
 import com.android.xrayfa.viewmodel.SubscriptionViewmodel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -137,7 +134,6 @@ fun SubscriptionScreen(
 
             val items =
                 listOf(
-                    Icons.Filled.QrCode to R.string.scan_qr_title,
                     Icons.AutoMirrored.Filled.NoteAdd to R.string.import_manually,
                 )
 
@@ -225,25 +221,8 @@ fun SubscriptionScreen(
                                         }
                                     ),
                             onClick = {
-                                if(item.first == Icons.AutoMirrored.Filled.NoteAdd) {
-                                    viewmodel.setSelectSubscriptionEmpty()
-                                    isBottomSheetShow = true
-                                } else {
-                                  // ScanQR code
-                                    onNavigate(ScanQR { result ->
-                                        if (result.isEmpty()) {
-                                            Toast.makeText(context, R.string.cancel, Toast.LENGTH_SHORT).show()
-                                        } else {
-                                            viewmodel.addSubscription(
-                                                subscription = Subscription(
-                                                    id = 0,
-                                                    url = result,
-                                                    mark = context.getString(R.string.import_manually)
-                                                )
-                                            )
-                                        }
-                                    })
-                                }
+                                viewmodel.setSelectSubscriptionEmpty()
+                                isBottomSheetShow = true
                                 fabMenuExpanded = false
                             },
                             icon = { Icon(item.first, contentDescription = null) },

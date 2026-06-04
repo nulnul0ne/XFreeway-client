@@ -39,7 +39,6 @@ import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.ContentCut
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.Mic
-import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Subscriptions
@@ -144,7 +143,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.text.style.TextAlign
-import com.android.xrayfa.ui.navigation.ScanQR
 import com.android.xrayfa.ui.theme.JuraNeon
 import com.android.xrayfa.viewmodel.XrayViewmodel.Companion.SUB_ALL
 import com.android.xrayfa.viewmodel.XrayViewmodel.Companion.SUB_MANUAL
