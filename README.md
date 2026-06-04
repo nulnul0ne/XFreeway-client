@@ -27,11 +27,11 @@ The app is based on XrayFA and uses Xray-core under the hood.
 ## Features
 
 - Support for XFreeway Basic and Plus subscriptions.
-- Available locations display: Russia, Finland, USA.
-- Direct connections for FI and US.
+- Available locations display.
+- Direct connections.
 - Cascade routes for Plus subscriptions.
 - Built-in XFreeway subscription store.
-- Madrid/API service status check.
+- API service status check.
 - Clean connection screen with active node and IP display.
 - VLESS/Reality support and other XrayFA protocols.
 - Material Design interface, dark theme, and subscription import from the Mini App.
