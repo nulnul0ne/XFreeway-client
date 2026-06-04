@@ -188,11 +188,6 @@ dependencies {
     ksp(libs.dagger.android.processor)
     // Zxing
     implementation(libs.zxing.core)
-    // CameraX Essential
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.compose)
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
 
     implementation(libs.gson)
     implementation(libs.androidx.navigation3.ui)

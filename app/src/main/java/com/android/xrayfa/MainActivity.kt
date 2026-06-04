@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import com.android.xrayfa.ui.component.XrayFAContainer
 import com.android.xrayfa.viewmodel.XrayViewmodel
 import com.android.xrayfa.ui.XrayBaseActivity
-import com.android.xrayfa.ui.navigation.ScanQR
 import com.android.xrayfa.viewmodel.AppsViewmodel
 import com.android.xrayfa.viewmodel.AppsViewmodelFactory
 import com.android.xrayfa.viewmodel.DetailViewmodel
@@ -68,7 +67,6 @@ class MainActivity @Inject constructor(
 
     companion object {
         const val TAG = "MainActivity"
-        const val ACTION_OPEN_SCAN = "open_scan"
         const val ACTION_START_SERVICE = "start_service"
         const val ACTION_STOP_SERVICE = "stop_service"
     }
@@ -152,15 +150,6 @@ class MainActivity @Inject constructor(
         // Retrieve the extra defined in shortcuts.xml
         val action = intent.getStringExtra("shortcut_action")
         when(action) {
-            ACTION_OPEN_SCAN -> {
-                xrayViewmodel.setPaddingRoute(ScanQR { result ->
-                    if (result.isEmpty()) {
-                        Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_LONG).show();
-                    }else {
-                        xrayViewmodel.addLink(result)
-                    }
-                })
-            }
             ACTION_START_SERVICE -> {
                 if (!xrayViewmodel.isServiceRunning()) {
                     xrayViewmodel.startXrayService(this)

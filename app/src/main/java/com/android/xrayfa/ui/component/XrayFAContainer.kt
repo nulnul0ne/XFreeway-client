@@ -82,7 +82,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.android.xrayfa.ui.navigation.RouteSettings
-import com.android.xrayfa.ui.navigation.ScanQR
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -238,26 +237,6 @@ fun XrayFAContainer(
                                 detailViewmodel = detailViewmodel,
                                 sharedTransitionScope = this@SharedTransitionLayout,
                                 onBack = { navBackStack.routeBack() }
-                            )
-                        }
-                        is ScanQR -> NavEntry(
-                            key = key,
-                            metadata = metadata {
-                                put(NavDisplay.TransitionKey) {
-                                    slideInHorizontally {it} togetherWith slideOutHorizontally {-it}
-                                }
-                                // Transition when navigating AWAY from this screen (Popping back)
-                                put(NavDisplay.PopTransitionKey) {
-                                    slideInHorizontally {-it} togetherWith slideOutHorizontally {it}
-                                }
-                            }
-                        ) {
-                            QRCodeScannerScreen(
-                                onBack = {navBackStack.routeBack()},
-                                onResult = { code ->
-                                    key.onResult(code)
-                                    navBackStack.routeBack()
-                                }
                             )
                         }
                         is RouteSettings -> NavEntry(
