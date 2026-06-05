@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/xfreeway-logo.png" alt="XFreeway Client" width="156" />
+<img width="150" height="150" alt="dark-blue-logo" src="https://github.com/user-attachments/assets/f7b836ec-85ba-4732-9016-56ab3746746e" />
 
 # XFreeway Client
 
@@ -33,7 +33,6 @@ The app is based on XrayFA and uses Xray-core under the hood.
 - Built-in XFreeway subscription store.
 - API service status check.
 - Clean connection screen with active node and IP display.
-- VLESS/Reality support and other XrayFA protocols.
 - Material Design interface, dark theme, and subscription import from the Mini App.
 
 ## Download
@@ -44,7 +43,7 @@ https://github.com/nulnul0ne/XFreeway-client/releases
 
 ## Version
 
-Current release: `1.0.7`
+Current release: `1.1.1`
 
 ## Attribution
 
