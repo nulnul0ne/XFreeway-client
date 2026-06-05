@@ -20,8 +20,8 @@ The app is based on XrayFA and uses Xray-core under the hood.
 ## Screenshots
 
 <div align="center">
-  <img src="docs/assets/screen1.jpg" alt="Main screen" width="280" />
-  <img src="docs/assets/screen2.jpg" alt="Additional screen" width="280" />
+  <img width="309" height="680" alt="Screenshot 2026-06-06 004547" src="https://github.com/user-attachments/assets/7aabfc76-3ec3-49e6-a500-b3912bdd225a" />
+  <img width="308" height="681" alt="Screenshot 2026-06-06 003915" src="https://github.com/user-attachments/assets/2ba966df-94ee-4ce2-9a3d-a9c00857f388" />
 </div>
 
 ## Features
